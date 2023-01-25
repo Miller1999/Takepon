@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takepon 🔥💧🌱</title>
+</head>
+<body>
+    <h1>Takepon 🔥💧🌱</h1>
+    <section id="selMascota">
+        <h2>Elige a tu takepon:</h2>
+
+        <input type="radio" name="mascota" id="Wailmezonk">
+        <label for="Wailmezonk">Wailmezonk</label>
+        <input type="radio" name="mascota" id="Skiploont">
+        <label for="Skiploont">Skiploont</label>
+        <input type="radio" name="mascota" id="Fennecros">
+        <label for="Fennecros">Fennecros</label>
+
+        <button id="boton-mascota">Seleccionar</button>
+    </section>
+    <section id="selAtaque">
+        <h2>Elige tu ataque:</h2>
+        <p>Tu takepon <span id="mascota-jugador"></span> tiene <span>3</span> vidas</p>
+        <p>El takepon <span id="mascota-enemigo"></span> del enemigo tiene <span>3</span> vidas</p>
+        <p>
+            <button id="boton-fuego">Fuego 🔥</button>
+            <button id="boton-agua">Agua 💧</button>
+            <button id="boton-tierra">Tierra 🌱</button>
+        </p> 
+    </section>
+    <section id="mensajes">
+        <p>Tu takepon ataco con FUEGO, el takepon del enemigo ataco con TIERRA - GANASTE 🎉</p>
+    </section>
+    <section id="reiniciar">
+        <button id="boton-reiniciar">Reiniciar</button>
+    </section>
+    <script src="./JS/takepon.js"></script>
+</body>
+</html>
