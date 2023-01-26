@@ -19,7 +19,7 @@ let botonReiniciar = document.getElementById("boton-reiniciar")
 botonReiniciar.addEventListener('click', reiniciarJuego)
 
 function seleccionarMascotaJugador(){
-    seccionSeleccionarAtaque.style.display = "block"
+    seccionSeleccionarAtaque.style.display = "flex"
     let seccionSeleccionarMascota = document.getElementById("selMascota")
     seccionSeleccionarMascota.style.display = "none"
     let inputWailzemonk = document.getElementById("Wailmezonk");
@@ -118,17 +118,25 @@ function revisarVidas(){
 }
 
 function crearMensaje(resultado){
-  let seccionMensajes = document.getElementById("mensajes")
-  let parrafo = document.createElement("p")
-  parrafo.innerHTML = "Tu takepon ataco con " + ataqueJugador  + ", el takepon del enemigo ataco con " + ataEnemigo + " " + resultado;
-  seccionMensajes.appendChild(parrafo)
+  let seccionMensajes = document.getElementById("resultado")
+  let ataquesdelJugador = document.getElementById("ataquedelJugador")
+  let ataquesdelEnemigo = document.getElementById("ataquedelEnemigo")
+
+  let nuevoataquedelJugador = document.createElement('p')
+  let nuevoataquedelEnemigo = document.createElement('p')
+
+  seccionMensajes.innerHTML = resultado
+  nuevoataquedelJugador.innerHTML = ataqueJugador
+  nuevoataquedelEnemigo.innerHTML = ataEnemigo
+
+  ataquesdelJugador.appendChild(nuevoataquedelJugador)
+  ataquesdelEnemigo.appendChild(nuevoataquedelEnemigo)
 }
 
 function crearMensajeFinal(resultadoFinal){
-  let seccionMensajes = document.getElementById("mensajes")
-  let parrafo = document.createElement("p")
-  parrafo.innerHTML = resultadoFinal
-  seccionMensajes.appendChild(parrafo)
+  let seccionMensajes = document.getElementById("resultado")
+  seccionMensajes.innerHTML = resultadoFinal
+
   let botonFuego = document.getElementById("boton-fuego")
   botonFuego.disabled = true
   let botonAgua = document.getElementById("boton-agua")
