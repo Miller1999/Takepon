@@ -26,15 +26,20 @@ body {
 }
 
 .tarjeta-takepon {
-    width: 180px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     background: #B08BBB;
     padding: 10px;
     box-sizing: border-box;
     border-radius: 20px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.tarjeta-takepon img{
+    width: 100px;
+    height: 100px;
 }
 .boton{
     margin: 25px;

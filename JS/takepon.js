@@ -1,31 +1,98 @@
+//Elementos del HTML
+const seccionSeleccionarAtaque = document.getElementById("selAtaque")
+const seccionReiniciar = document.getElementById("reiniciar")
+const botonMascotaJugador = document.getElementById("boton-mascota");
+const botonFuego = document.getElementById("boton-fuego")
+const botonAgua = document.getElementById("boton-agua")
+const botonTierra = document.getElementById("boton-tierra")
+const botonReiniciar = document.getElementById("boton-reiniciar")
+//Elementos HTML que estaban dentro de funcion seleccionarMascotaJugador
+const seccionSeleccionarMascota = document.getElementById("selMascota")
+const inputWailzemonk = document.getElementById("Wailmezonk");
+const inputSkiploont = document.getElementById("Skiploont");
+const inputFennecros = document.getElementById("Fennecros");
+const spanMascotaJugador = document.getElementById("mascota-jugador");
+//Elementos HTML que estaban dentro de funcion seleccionarMascotaEnemigo
+const spanMascotaEnemigo = document.getElementById("mascota-enemigo");
+//Elementos HTML que estaban dentro de funcion combate
+const spanVidasJugador = document.getElementById("vidas-jugador")
+const spanVidasEnemigo = document.getElementById("vidas-enemigo")
+//Elementos HTML que estaban en la funcion crear mensaje
+const seccionMensajes = document.getElementById("resultado")
+const ataquesdelJugador = document.getElementById("ataquedelJugador")
+const ataquesdelEnemigo = document.getElementById("ataquedelEnemigo")
+//Elementos HTML que estaban en la funcion crear mensaje final
+//let seccionMensajes = document.getElementById("resultado")
+//let botonFuego = document.getElementById("boton-fuego")
+//let botonAgua = document.getElementById("boton-agua")
+//let botonTierra = document.getElementById("boton-tierra")
+const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
+let takepones = []
 let ataqueJugador
 let ataEnemigo
+let opcionDeTakepon
 let vidasJugador = 3
 let vidasEnemigo = 3
 
-let seccionSeleccionarAtaque = document.getElementById("selAtaque")
+class Takepon{
+  constructor(nombre,foto,vida){
+    this.nombre = nombre
+    this.foto = foto
+    this.vida = vida
+    this.ataques = []
+  }
+}
+
+let wailmezonk = new Takepon("Wailzemonk",'./Imagenes/Wailmezonk.jpg', 5)
+let skiploont = new Takepon("Skiploont",'./Imagenes/Skiploont.jpg',5)
+let fennecros = new Takepon("Fennecros",'./Imagenes/Fennecros.jpg',5)
+
+wailmezonk.ataques.push(
+  {nombre: "💧", id: "boton-agua"},
+  {nombre: "💧", id: "boton-agua"},
+  {nombre: "💧", id: "boton-agua"},
+  {nombre: "🔥", id: "boton-fuego"},
+  {nombre: "🌱", id: "boton-tierra"}
+)
+skiploont.ataques.push(
+  {nombre: "💧", id: "boton-agua"},
+  {nombre: "🔥", id: "boton-fuego"},
+  {nombre: "🌱", id: "boton-tierra"},
+  {nombre: "🌱", id: "boton-tierra"},
+  {nombre: "🌱", id: "boton-tierra"}
+)
+fennecros.ataques.push(
+  {nombre: "💧", id: "boton-agua"},
+  {nombre: "🔥", id: "boton-fuego"},
+  {nombre: "🔥", id: "boton-fuego"},
+  {nombre: "🔥", id: "boton-fuego"},
+  {nombre: "🌱", id: "boton-tierra"}
+)
+
+takepones.push(wailmezonk,skiploont,fennecros)
+
 seccionSeleccionarAtaque.style.display = "none";
-let seccionReiniciar = document.getElementById("reiniciar")
 seccionReiniciar.style.display = "none"
-let botonMascotaJugador = document.getElementById("boton-mascota");
 botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador);
-let botonFuego = document.getElementById("boton-fuego")
 botonFuego.addEventListener('click',ataqueFuego)
-let botonAgua = document.getElementById("boton-agua")
 botonAgua.addEventListener('click', ataqueAgua)
-let botonTierra = document.getElementById("boton-tierra")
 botonTierra.addEventListener('click', ataqueTierra)
-let botonReiniciar = document.getElementById("boton-reiniciar")
 botonReiniciar.addEventListener('click', reiniciarJuego)
+
+takepones.forEach((takepon) => {
+  opcionDeTakepon = `
+  <input type="radio" name="mascota" id=${takepon.nombre}>
+  <label class="tarjeta-takepon" for=${takepon.nombre}>
+      <p>${takepon.nombre}</p>
+      <img src=${takepon.foto} alt=${takepon.nombre}>
+  </label>
+  `
+  contenedorTarjetas.innerHTML +=  opcionDeTakepon
+})
 
 function seleccionarMascotaJugador(){
     seccionSeleccionarAtaque.style.display = "flex"
-    let seccionSeleccionarMascota = document.getElementById("selMascota")
     seccionSeleccionarMascota.style.display = "none"
-    let inputWailzemonk = document.getElementById("Wailmezonk");
-    let inputSkiploont = document.getElementById("Skiploont");
-    let inputFennecros = document.getElementById("Fennecros");
-    let spanMascotaJugador = document.getElementById("mascota-jugador");
     if(inputWailzemonk.checked == true)
     {
         spanMascotaJugador.innerHTML = "Wailzemonk"
@@ -46,7 +113,7 @@ function seleccionarMascotaJugador(){
 
 function seleccionarMascotaEnemigo(){
   let takeponEnemigo = aleatorio(1,3);
-  let spanMascotaEnemigo = document.getElementById("mascota-enemigo");
+
   if(takeponEnemigo == 1){
     spanMascotaEnemigo.innerHTML = "Wailzemonk"
   } else if (takeponEnemigo == 2){
@@ -54,10 +121,6 @@ function seleccionarMascotaEnemigo(){
   } else if(takeponEnemigo == 3){
     spanMascotaEnemigo.innerHTML = "Fennecros"
   }
-}
-
-function aleatorio(min,max){
-  return Math.floor(Math.random()*(max-min+1)+min);
 }
 
 function ataqueAgua(){
@@ -85,8 +148,7 @@ function ataqueEnemigo(){
 }
 
 function combate(){
-  let spanVidasJugador = document.getElementById("vidas-jugador")
-  let spanVidasEnemigo = document.getElementById("vidas-enemigo")
+
   if (ataqueJugador == ataEnemigo) {
     crearMensaje("EMPATE")
   } else if (ataqueJugador == "FUEGO" && ataEnemigo == "TIERRA") {
@@ -118,10 +180,6 @@ function revisarVidas(){
 }
 
 function crearMensaje(resultado){
-  let seccionMensajes = document.getElementById("resultado")
-  let ataquesdelJugador = document.getElementById("ataquedelJugador")
-  let ataquesdelEnemigo = document.getElementById("ataquedelEnemigo")
-
   let nuevoataquedelJugador = document.createElement('p')
   let nuevoataquedelEnemigo = document.createElement('p')
 
@@ -134,16 +192,15 @@ function crearMensaje(resultado){
 }
 
 function crearMensajeFinal(resultadoFinal){
-  let seccionMensajes = document.getElementById("resultado")
   seccionMensajes.innerHTML = resultadoFinal
-
-  let botonFuego = document.getElementById("boton-fuego")
   botonFuego.disabled = true
-  let botonAgua = document.getElementById("boton-agua")
   botonAgua.disabled = true
-  let botonTierra = document.getElementById("boton-tierra")
   botonTierra.disabled = true
   seccionReiniciar.style.display = "block"
+}
+
+function aleatorio(min,max){
+  return Math.floor(Math.random()*(max-min+1)+min);
 }
 
 function reiniciarJuego(){
