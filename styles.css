@@ -82,8 +82,29 @@ input:checked + label{
     grid-template-columns: 200px 200px;
 }
 
-@media (max-width: 360px) {
+#verMapa{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#verMapa button{
+    margin: 10px 0;
+    width: 100px;
+    height: 60px;
+    background-color: #ECA869;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+}
+
+@media (max-width: 370px) {
     .tarjetas, .tarjetasAtaques{
+        flex-direction: column;
+    }
+    #verMapa div{
+        display: flex;
+        align-items: center;
         flex-direction: column;
     }
 }
