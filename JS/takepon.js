@@ -24,19 +24,23 @@ const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
 const contenedorAtaques = document.getElementById("contenedorAtaques")
 
 let takepones = []
-let ataqueJugador
-let ataEnemigo
+let ataqueJugador = []
+let ataEnemigo = []
 let opcionDeTakepon
 let inputWailzemonk
 let inputSkiploont
 let inputFennecros
 let mascotaJugador
 let ataquesTakepon
+let ataquesTakeponEnemigo
 let botonFuego
 let botonAgua
 let botonTierra
 let botones = []
-let ataqueJugadors = []
+let indexAtaqueJugador
+let indexAtaqueEnemigo
+let victoriasJugador = 0
+let victoriasEnemigo = 0
 let vidasJugador = 3
 let vidasEnemigo = 3
 
@@ -148,65 +152,96 @@ function mostrarAtaques(ataques){
 
 function secuenciaAtaque(){
   botones.forEach((boton)=>{
-    boton.addEventListener('click',(e)=>{
+    boton.addEventListener('click',(e) => {
       if(e.target.textContent === "🔥"){
-        ataqueJugadors.push("FUEGO")
+        ataqueJugador.push("FUEGO")
+        console.log(ataqueJugador)
+        boton.disabled = true
       }else if(e.target.textContent === "💧"){
-        ataqueJugadors.push("AGUA")
+        ataqueJugador.push("AGUA")
+        console.log(ataqueJugador)
+        boton.disabled = true
       }else if(e.target.textContent === "🌱"){
-        ataqueJugadors.push("TIERRA")
+        ataqueJugador.push("TIERRA")
+        console.log(ataqueJugador)
+        boton.disabled = true
       }
+      ataqueEnemigo()
     })
   })
+  
 }
 
 function seleccionarMascotaEnemigo(){
   let takeponEnemigo = aleatorio(0,takepones.length-1);
   spanMascotaEnemigo.innerHTML = takepones[takeponEnemigo].nombre
+  ataquesTakeponEnemigo = takepones[takeponEnemigo].ataques
   secuenciaAtaque()
 }
 
 function ataqueEnemigo(){
-  let ataqueAleatorio = aleatorio(1,3)
-  if(ataqueAleatorio == 1){
-    ataEnemigo = "FUEGO"
-  } else if (ataqueAleatorio == 2){
-    ataEnemigo = "AGUA"
-  } else if(ataqueAleatorio == 3){
-    ataEnemigo = "TIERRA"
+  let ataqueAleatorio = aleatorio(0,takepones.length-1)
+  if(ataqueAleatorio == 0 || ataqueAleatorio == 1){
+    ataEnemigo.push("FUEGO")
+  } else if (ataqueAleatorio == 3 || ataqueAleatorio == 4){
+    ataEnemigo.push("AGUA")
+  } else{
+    ataEnemigo.push("TIERRA")
   }
-  combate()
+  console.log(ataEnemigo)
+  iniciarPelea()
+}
+
+function iniciarPelea(){
+  if(ataqueJugador.length === 5){
+    combate()
+  }
+}
+
+function indexAmbosOponentes(jugador,enemigo){
+  indexAtaqueJugador = ataqueJugador[jugador]
+  indexAtaqueEnemigo = ataEnemigo[enemigo]
 }
 
 function combate(){
 
-  if (ataqueJugador == ataEnemigo) {
-    crearMensaje("EMPATE")
-  } else if (ataqueJugador == "FUEGO" && ataEnemigo == "TIERRA") {
+  for(let i = 0; i < ataqueJugador.length; i++){
+    if(ataqueJugador[i] === ataEnemigo[i]){
+      indexAmbosOponentes(i,i)
+      crearMensaje("EMPATE")
+    } else if (ataqueJugador[i] == "FUEGO" && ataEnemigo[i] == "TIERRA") {
+      indexAmbosOponentes(i,i)
       crearMensaje("GANASTE")
-      vidasEnemigo--
-      spanVidasEnemigo.innerHTML = vidasEnemigo
-  } else if (ataqueJugador == "AGUA" && ataEnemigo == "FUEGO") {
+      victoriasJugador++
+      spanVidasJugador.innerHTML = victoriasJugador
+    }  else if (ataqueJugador[i] == "AGUA" && ataEnemigo[i] == "FUEGO") {
+      indexAmbosOponentes(i,i)
       crearMensaje("GANASTE")
-      vidasEnemigo--
-      spanVidasEnemigo.innerHTML = vidasEnemigo
-  } else if (ataqueJugador == "TIERRA" && ataEnemigo == "AGUA") {
+      victoriasJugador++
+      spanVidasJugador.innerHTML = victoriasJugador
+    } else if (ataqueJugador[i] == "TIERRA" && ataEnemigo[i] == "AGUA") {
+      indexAmbosOponentes(i,i)
       crearMensaje("GANASTE")
-      vidasEnemigo--
-      spanVidasEnemigo.innerHTML = vidasEnemigo
-  } else {
+      victoriasJugador++
+      spanVidasJugador.innerHTML = victoriasJugador
+    } else {
+      indexAmbosOponentes(i,i)
       crearMensaje("PERDISTE")
-      vidasJugador--;
-      spanVidasJugador.innerHTML = vidasJugador
-  } 
-  revisarVidas()
+      victoriasEnemigo++
+      spanVidasEnemigo.innerHTML = victoriasEnemigo
+    } 
+  }
+
+  revisarVictorias()
 }
 
-function revisarVidas(){
-  if(vidasEnemigo == 0){
-    crearMensajeFinal("FELICIDADES ERES UN MAESTRO TAKEPON")
-  }else if (vidasJugador == 0){
-    crearMensajeFinal("ENTRENA MAS!!!!")
+function revisarVictorias(){
+  if(victoriasJugador === victoriasEnemigo){
+    crearMensajeFinal("DESEMPATE")
+  }else if (victoriasJugador > victoriasEnemigo){
+    crearMensajeFinal("ERES UN MAESTRO TAKEPON")
+  }else{
+    crearMensajeFinal("ENTRENA MAS!!")
   }
 }
 
@@ -215,8 +250,8 @@ function crearMensaje(resultado){
   let nuevoataquedelEnemigo = document.createElement('p')
 
   seccionMensajes.innerHTML = resultado
-  nuevoataquedelJugador.innerHTML = ataqueJugador
-  nuevoataquedelEnemigo.innerHTML = ataEnemigo
+  nuevoataquedelJugador.innerHTML = indexAtaqueJugador
+  nuevoataquedelEnemigo.innerHTML = indexAtaqueEnemigo
 
   ataquesdelJugador.appendChild(nuevoataquedelJugador)
   ataquesdelEnemigo.appendChild(nuevoataquedelEnemigo)
@@ -224,9 +259,6 @@ function crearMensaje(resultado){
 
 function crearMensajeFinal(resultadoFinal){
   seccionMensajes.innerHTML = resultadoFinal
-  botonFuego.disabled = true
-  botonAgua.disabled = true
-  botonTierra.disabled = true
   seccionReiniciar.style.display = "block"
 }
 

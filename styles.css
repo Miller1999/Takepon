@@ -64,7 +64,7 @@ input:checked + label{
     background-color: #B08BBB;
     font-family: 'Press Start 2P', cursive;
     border-radius: 0px 20px 20px 20px;
-    width: 130px;
+    width: 50px;
     border: 1px solid;
 }
 #mensajes{
