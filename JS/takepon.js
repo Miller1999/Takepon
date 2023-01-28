@@ -2,15 +2,9 @@
 const seccionSeleccionarAtaque = document.getElementById("selAtaque")
 const seccionReiniciar = document.getElementById("reiniciar")
 const botonMascotaJugador = document.getElementById("boton-mascota");
-const botonFuego = document.getElementById("boton-fuego")
-const botonAgua = document.getElementById("boton-agua")
-const botonTierra = document.getElementById("boton-tierra")
 const botonReiniciar = document.getElementById("boton-reiniciar")
 //Elementos HTML que estaban dentro de funcion seleccionarMascotaJugador
 const seccionSeleccionarMascota = document.getElementById("selMascota")
-const inputWailzemonk = document.getElementById("Wailmezonk");
-const inputSkiploont = document.getElementById("Skiploont");
-const inputFennecros = document.getElementById("Fennecros");
 const spanMascotaJugador = document.getElementById("mascota-jugador");
 //Elementos HTML que estaban dentro de funcion seleccionarMascotaEnemigo
 const spanMascotaEnemigo = document.getElementById("mascota-enemigo");
@@ -27,10 +21,22 @@ const ataquesdelEnemigo = document.getElementById("ataquedelEnemigo")
 //let botonAgua = document.getElementById("boton-agua")
 //let botonTierra = document.getElementById("boton-tierra")
 const contenedorTarjetas = document.getElementById("contenedor-tarjetas")
+const contenedorAtaques = document.getElementById("contenedorAtaques")
+
 let takepones = []
 let ataqueJugador
 let ataEnemigo
 let opcionDeTakepon
+let inputWailzemonk
+let inputSkiploont
+let inputFennecros
+let mascotaJugador
+let ataquesTakepon
+let botonFuego
+let botonAgua
+let botonTierra
+let botones = []
+let ataqueJugadors = []
 let vidasJugador = 3
 let vidasEnemigo = 3
 
@@ -74,9 +80,6 @@ takepones.push(wailmezonk,skiploont,fennecros)
 seccionSeleccionarAtaque.style.display = "none";
 seccionReiniciar.style.display = "none"
 botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador);
-botonFuego.addEventListener('click',ataqueFuego)
-botonAgua.addEventListener('click', ataqueAgua)
-botonTierra.addEventListener('click', ataqueTierra)
 botonReiniciar.addEventListener('click', reiniciarJuego)
 
 takepones.forEach((takepon) => {
@@ -88,6 +91,10 @@ takepones.forEach((takepon) => {
   </label>
   `
   contenedorTarjetas.innerHTML +=  opcionDeTakepon
+
+  inputWailzemonk = document.getElementById("Wailzemonk")
+  inputSkiploont  = document.getElementById("Skiploont")
+  inputFennecros = document.getElementById("Fennecros")
 })
 
 function seleccionarMascotaJugador(){
@@ -95,46 +102,70 @@ function seleccionarMascotaJugador(){
     seccionSeleccionarMascota.style.display = "none"
     if(inputWailzemonk.checked == true)
     {
-        spanMascotaJugador.innerHTML = "Wailzemonk"
+        spanMascotaJugador.innerHTML = inputWailzemonk.id
+        mascotaJugador = inputWailzemonk.id
     }
     else if(inputSkiploont.checked == true)
     {
-        spanMascotaJugador.innerHTML = "Skiploont"
+        spanMascotaJugador.innerHTML = inputSkiploont.id
+        mascotaJugador = inputSkiploont.id
     }
     else if(inputFennecros.checked == true)
     {
-        spanMascotaJugador.innerHTML = "Fennecros"
+        spanMascotaJugador.innerHTML = inputFennecros.id
+        mascotaJugador = inputFennecros.id
     }
     else{
         alert("No escogiste ningun takepon")
     }
+    extraerAtaques(mascotaJugador)
     seleccionarMascotaEnemigo()
 }
 
-function seleccionarMascotaEnemigo(){
-  let takeponEnemigo = aleatorio(1,3);
-
-  if(takeponEnemigo == 1){
-    spanMascotaEnemigo.innerHTML = "Wailzemonk"
-  } else if (takeponEnemigo == 2){
-    spanMascotaEnemigo.innerHTML = "Skiploont"
-  } else if(takeponEnemigo == 3){
-    spanMascotaEnemigo.innerHTML = "Fennecros"
+function extraerAtaques(mascotaJugador){
+  let ataques
+  for(let i = 0;i<takepones.length;i++)
+  {
+    if(mascotaJugador === takepones[i].nombre){
+      ataques = takepones[i].ataques
+    }
   }
+  mostrarAtaques(ataques)
 }
 
-function ataqueAgua(){
-  ataqueJugador = "AGUA"
-  ataqueEnemigo()
+function mostrarAtaques(ataques){
+  ataques.forEach((ataque)=>{
+    ataquesTakepon = `
+    <button id=${ataque.id} class="botonAtaque BAtaque">${ataque.nombre}</button>
+    `
+    contenedorAtaques.innerHTML += ataquesTakepon
+  })
+  botonFuego = document.getElementById("boton-fuego")
+  botonAgua = document.getElementById("boton-agua")
+  botonTierra = document.getElementById("boton-tierra")
+  botones = document.querySelectorAll(".BAtaque")
 }
-function ataqueFuego(){
-  ataqueJugador = "FUEGO"
-  ataqueEnemigo()
+
+function secuenciaAtaque(){
+  botones.forEach((boton)=>{
+    boton.addEventListener('click',(e)=>{
+      if(e.target.textContent === "🔥"){
+        ataqueJugadors.push("FUEGO")
+      }else if(e.target.textContent === "💧"){
+        ataqueJugadors.push("AGUA")
+      }else if(e.target.textContent === "🌱"){
+        ataqueJugadors.push("TIERRA")
+      }
+    })
+  })
 }
-function ataqueTierra(){
-  ataqueJugador = "TIERRA"
-  ataqueEnemigo()
+
+function seleccionarMascotaEnemigo(){
+  let takeponEnemigo = aleatorio(0,takepones.length-1);
+  spanMascotaEnemigo.innerHTML = takepones[takeponEnemigo].nombre
+  secuenciaAtaque()
 }
+
 function ataqueEnemigo(){
   let ataqueAleatorio = aleatorio(1,3)
   if(ataqueAleatorio == 1){
